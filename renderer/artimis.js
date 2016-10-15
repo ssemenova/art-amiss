@@ -20,3 +20,4 @@ function getChannels() {
     return {red, green, blue};
 }
 
+setXShift(3, 10);

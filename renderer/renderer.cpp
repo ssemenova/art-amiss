@@ -19,9 +19,9 @@ extern "C" {
         int* blueRegion;
     } Image;
 
-    int[] xShifts = {0, 0, 0, 0, 0, 0, 0};
+    int xShifts[] = {0, 0, 0, 0, 0, 0, 0};
 
-    int setXShift(int curve, int shift) {
+    void setXShift(int curve, int shift) {
         xShifts[curve] = shift;
     }
 
