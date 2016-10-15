@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
     <script>
     $(function() {
         $(".accordion").each(function() {
@@ -41,8 +42,9 @@
                     <form class="pure-form pure-form-aligned">
                         <fieldset v-for="attribute in attributes">
                             <div class="pure-control-group">
-                                <label v-bind:for=attribute>{{attribute}}</label>
-                                <input v-bind:id=attribute type="text" v-bind:placeholder="attribute.value">
+                                <label v-bind:for=attribute.name>{{attribute.name}}</label>
+                                <input v-bind:id=attribute.name type="text" v-bind:placeholder="attribute.value"
+                                    v-model="attribute.value">
                             </div>
                         </fieldset>
                     </form>
