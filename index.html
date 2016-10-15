@@ -1,0 +1,57 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Such art</title>
+    <meta name="description" content="The HTML5 Herald">
+    <meta name="author" content="SitePoint">
+
+    <link rel="stylesheet" href="assets/style.css">
+    <script src="https://unpkg.com/vue@next/dist/vue.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $(function() {
+        $(".accordion").each(function() {
+            $(this).accordion({
+              collapsible: true,
+              active: false
+            });
+        })
+    });
+    </script>
+
+
+</head>
+<body>
+    <nav>
+        <span id="title">Interactive Art</span>
+    </nav>
+    <div id="app">
+        <div class="pure-g">
+            <div class="pure-u-1-2">
+                <canvas id="myCanvas" width="200" height="100"></canvas>
+            </div>
+            <div class="pure-u-1-2">
+                <div class="controls accordion" v-for="curve in curves">
+                    <h3 class="curve-title">Curve {{curve}}</h3>
+                    <form class="pure-form pure-form-aligned">
+                        <fieldset v-for="attribute in attributes">
+                            <div class="pure-control-group">
+                                <label v-bind:for=attribute>{{attribute}}</label>
+                                <input v-bind:id=attribute type="text" v-bind:placeholder="attribute.value">
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js.js"></script>
+
+</body>
+</html>

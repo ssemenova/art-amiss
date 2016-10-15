@@ -1,0 +1,27 @@
+.controls {
+    cursor: pointer;
+    padding: .5em;
+    border: 3px solid black;
+    border-radius: .5em;
+    margin: 1em;
+}
+
+h3 {
+    margin: .25em;
+}
+
+nav {
+    padding: 1em;
+    margin: 1em;
+}
+
+#app {
+    margin-top: 2em;
+}
+
+#title {
+    font-size: 1.5em;
+    background: yellow;
+    padding: .5em 1em;
+    font-weight: bold;
+}
