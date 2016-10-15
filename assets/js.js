@@ -6,6 +6,12 @@ new Vue({
         attributes: ["x-shift", "y-shift", "rotation", "x-stretch", "y-stretch"]
     },
     methods: {
-
+        readFile: function() {
+            var reader = require("fs");
+            reader.readFile("../renderer/data", function(text){
+                var textByLine = text.split(",")
+            });
+            console.log(textByLine);
+        }
     }
 })
