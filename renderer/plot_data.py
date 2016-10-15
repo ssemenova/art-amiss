@@ -6,7 +6,8 @@ with open("data") as f:
 import matplotlib.pyplot as plt
 import numpy as np
 
-d = np.array(data).reshape((520, 504))
+d = np.array(data).reshape((520, 504))/2
+
 print(d.shape)
 
 plt.imshow(d, cmap="Greys")
