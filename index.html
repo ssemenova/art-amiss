@@ -14,7 +14,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
-    <link ref="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.js"></script>
     <script src="../renderer/renderer.js"></script>
     <script src="../renderer/artimis.js"></script>
@@ -35,8 +35,7 @@
                         <fieldset v-for="attribute in attributes">
                             <div class="pure-control-group">
                                 <label v-bind:for=attribute.name>{{attribute.name}}</label>
-                                <input class="slider" type="range" v-bind:id=attribute.name name="points" min="0" max="10" v-bind:placeholder="attribute.value"
-                                    v-model="attribute.value">
+                                <div class="slider" v-bind:forattr="attribute.jsname"></div>
                             </div>
                         </fieldset>
                     </form>
@@ -45,28 +44,9 @@
         </div>
     </div>
 
-    <script src="assets/js.js"></script>
-    <script>
-    $(function() {
-        $(".accordion").each(function() {
-            $(this).accordion({
-              collapsible: true,
-              active: false
-            });
-        })
+    <div id="boop"></div>
 
-        $(".slider").each(function() {
-            noUiSlider.create(slider, {
-                start: [20, 80],
-                connect: true,
-                range: {
-                    'min': 0,
-                    'max': 100
-                }
-            });
-        })
-    });
-    </script>
+    <script src="assets/js.js"></script>
 
 </body>
 </html>
