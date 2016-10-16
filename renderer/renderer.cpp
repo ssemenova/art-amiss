@@ -20,9 +20,14 @@ extern "C" {
     } Image;
 
     int xShifts[] = {0, 0, 0, 0, 0, 0, 0};
-
+    int yShifts[] = {0, 0, 0, 0, 0, 0, 0};
+    
     void setXShift(int curve, int shift) {
         xShifts[curve] = shift;
+    }
+
+    void setYShift(int curve, int shift) {
+        yShifts[curve] = shift;
     }
 
     int evaluatePoly(int y, Image* img, int polyIdx) {
@@ -30,7 +35,7 @@ extern "C" {
         int currentDegree = img->degree;
         for (int i = 0; i < img->degree+1; i++) {
             double coeff = img->coeffs[(img->degree+1) * polyIdx + i];
-            collector += coeff * pow(y, currentDegree);
+            collector += coeff * pow(y+yShift[polyIdx], currentDegree);
             currentDegree--;
         }
 
