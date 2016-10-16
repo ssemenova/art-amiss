@@ -51,38 +51,37 @@ extern "C" {
             for (int polyIdx = 0; polyIdx < img->numPoly; polyIdx++) {
                 int polyVal = evaluatePoly(y, img, polyIdx);
                 xValues.push_back(polyVal);
-                                
             }
 
-            for (int i = 1; i < xValues.size(); i++)
-                if (xValues[i-1] > xValues[i])
-                    xValues[i] = xValues[i-1]+3;
+            for (unsigned int i = 0; i < xValues.size(); i++) {
+                if (xValues[i] < 10) {
+                    xValues[i] = 20;
+                }
 
-            for (int i = 0; i < xValues.size()-1; i++) {
-                if (xValues[i+1] < xValues[i]) {
-                    xValues[i] = xValues[i+1]-3;
+                if (xValues[i] >= 502) {
+                    xValues[i] = 501;
                 }
             }
             
-            
-            for (int i = 0; i < xValues.size(); i++) {
-                if (xValues[i] < 10)
-                    xValues[i] = 10;
+            for (unsigned int i = 1; i < xValues.size(); i++) {
+                if (xValues[i-1] > xValues[i]) {
+                    xValues[i] = xValues[i-1]+3;
+                }
+            }
 
-                if (xValues[i] >= 500)
-                    xValues[i] = 500;
-                
+            for (unsigned int i = 0; i < xValues.size(); i++) {
                 int indexVal = TO_INDEX(xValues[i], y, img);
                 renderTo[indexVal] = -1;
             }
-
+            
+            
         }
     }
 
     int labelNextRegion(Image* img, int* data, int regionLabel) {
         // scan the image left to right, then up and down
         int nextRegionIdx = -1;
-        for (int i = 0; i < 520*504; i++) {
+        for (int i = 0; i < img->xDim*img->yDim; i++) {
             if (data[i] == 0) {
                 // found it
                 nextRegionIdx = i;
@@ -134,6 +133,8 @@ extern "C" {
         for (int i = 0; i < img->xDim * img->yDim; i++) {
             if (labeledImg[i] != -1) {
                 channel[i] = colors[labeledImg[i]-1];
+            } else if (labeledImg[i] == 0 || labeledImg[i] >= 8) {
+                channel[i] = colors[labeledImg[0]];
             }
         }
 
@@ -153,6 +154,13 @@ extern "C" {
         i.yDim = 520;
         i.degree = 3;
         i.numPoly = 6;
+
+        // zero it out
+        for (int i = 0; i < 520*504; i++) {
+            red[i] = 0;
+            green[i] = 0;
+            blue[i] = 0;
+        }
 
         double coeffs[] = { 5.21077678e-07, 7.81409213e-04,-4.54538977e-01, 2.10766591e+02, 1.28745088e-07, 1.59508605e-03,-7.74351891e-01, 2.50757158e+02, -1.36611612e-06, 2.09329501e-03,-6.18243231e-01, 2.75820046e+02, 1.27859619e-06,-1.49002860e-04,-1.30547220e-01, 2.76185389e+02,-2.12685889e-06, 1.94450901e-03,-2.09131751e-01, 2.86335871e+02,1.52425141e-07, 6.48831267e-04,-1.24328052e-01, 3.22808640e+02 };
 
@@ -188,14 +196,22 @@ extern "C" {
 
     int main(int argc, char** argv) {
         int dim = 520 * 504;
-        int* red = (int*) calloc(sizeof(int), dim);
-        int* green = (int*) calloc(sizeof(int), dim);
-        int* blue = (int*) calloc(sizeof(int), dim);
+        int* red = (int*) malloc(sizeof(int)* dim);
+        int* green = (int*) malloc(sizeof(int)* dim);
+        int* blue = (int*) malloc(sizeof(int)* dim);
 
+
+        xShifts[2] = 50;
+        xShifts[3] = 200;
+        
         getChannels(red, green, blue);
 
         for (int i = 0; i < dim; i++)
             printf("%d,", green[i]);
+
+        free(red);
+        free(green);
+        free(blue);
     }
 
 }
