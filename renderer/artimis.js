@@ -1,5 +1,7 @@
 _getChannels = Module.cwrap('getChannels', 'void', ['number', 'number', 'number']);
 
+setXShift = Module.cwrap("setXShift", 'void', ['number', 'number']);
+
 function getChannels() {
     const sz = 520 * 504 * 8;
     let rred = Module._malloc(sz);
@@ -17,3 +19,5 @@ function getChannels() {
 
     return {red, green, blue};
 }
+
+setXShift(3, 10);
