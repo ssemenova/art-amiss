@@ -40,14 +40,14 @@ nav {
 }
 
 canvas {
-    padding-top: 5.7em;
-    padding-left: 3.8em;
+    padding-top: 6.45em;
+    padding-left: 4.2em;
 }
 
 .frame {
     background-size: 100% 100%;
-    width: 633px;
-    height: 714px;
+    width: 641px;
+    height: 728px;
     background-repeat: no-repeat;
     position: absolute;
     background-repeat-x: no-repeat;
