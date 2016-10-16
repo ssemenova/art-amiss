@@ -75,3 +75,57 @@ canvas {
 .pure-form-aligned .pure-control-group label {
     width: 12em;
 }
+
+.button {
+    display: inline-block;
+    padding: 13px 23px;
+    font-size: 18px;
+    font-family: 'Montserrat';
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: rosybrown;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px sienna;
+}
+
+.button:hover {background-color: rosybrown}
+
+.button:active {
+    background-color: rosybrown;
+    box-shadow: 0 5px sienna;
+    transform: translateY(4px);
+}
+
+.wackify {
+    padding: 2em;
+}
+
+#secretMessages {
+    width: 100%;
+    height: 100%;
+    z-index: 10000000;
+    background-color: white;
+    opacity: 50%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+* {
+    box-sizing: initial;
+}
+
+#secretMessages h3 {
+    text-align: center;
+    font-size: 3em;
+    padding-top: 5em;
+    font-family: 'Montserrat';
+}
+
+#secretMessages .fa {
+    font-size: 3em;
+}

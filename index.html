@@ -9,6 +9,8 @@
     <meta name="author" content="SitePoint">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@next/dist/vue.js"></script>
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -43,12 +45,18 @@
                         </fieldset>
                     </form>
                 </div>
+                <div class="wackify">
+                    <button class="button" v-on:click="wackify">WACKIFY!</button>
+                </div>
             </div>
         </div>
+        <div class="w3-animate-opacity" id="secretMessages" v-if="wackifyLoading">
+            <h3>{{wackifyMessage}}</h3>
+            <center>
+                <div class="fa fa-spinner fa-spin" v-if="wackifyLoading"></div>
+            </center>
+        </div>
     </div>
-
-    <div id="boop"></div>
-
     <script src="assets/js.js"></script>
 
 </body>
