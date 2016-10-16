@@ -2,9 +2,9 @@ var app = new Vue({
     el: '#app',
     data: {
         message: 'Hello Vue.js!',
-        curves: [1,2,3,4,5,6,7],
-        xShifts: [0,0,0,0,0,0,0],
-        yShifts: [0,0,0,0,0,0,0],
+        curves: [1,2,3,4,5,6],
+        xShifts: [0,0,0,0,0,0],
+        yShifts: [0,0,0,0,0,0],
         attributes: [{"name": "x shift",
                       "jsname": "xShifts"},
                      {"name": "y shift",
@@ -52,7 +52,7 @@ var app = new Vue({
                 if (fa == "xShifts") {
                     Vue.set(vm.xShifts, parseInt(myIdx), parseInt(values[handle]));
                 } else if (fa == "yShifts") {
-                    vm.yShifts[parseInt(myIdx)] = parseInt(values[handle]);
+                    Vue.set(vm.yShifts, parseInt(myIdx), parseInt(values[handle]));
                 }
             });
         });
@@ -67,7 +67,19 @@ var app = new Vue({
     },
     watch: {
         xShifts: function(val) {
-            
+            val.forEach((val, idx) => {
+                setXShift(idx, val);
+            })
+
+            this.drawCanvas();
+        },
+        yShifts: function(val) {
+            val.forEach((val, idx) => {
+                setYShift(idx, val);
+            })
+
+            this.drawCanvas();
+            console.log("yshifts");
         }
     }
 })
