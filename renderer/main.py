@@ -6,6 +6,10 @@ import matplotlib.pyplot as plt
 import skimage.measure
 import itertools
 from collections import defaultdict
+import imageio
+import glob
+from pylab import *
+import os
 
 #import bezier_fit
 
@@ -41,7 +45,7 @@ def group_points_by_row(points, num_rows):
     max_pts = max(len(x) for _,x in toR.items())
     toR = {k: v for k, v in toR.items() if len(v) == max_pts}
     toR = [[(x, y) for x in xlist] for y,xlist in toR.items()]
-    
+
     return np.transpose(np.array(toR), (1, 0, 2))
 
 
@@ -79,7 +83,7 @@ def neighbors(point, shape):
     if point[1] + 1 < shape[1]: toR.append([point[0], point[1] + 1])
 
     return toR
-    
+
 def expand_region(labels, start, to_label):
     # starting at the start point, expand the region until
     # we hit something that is not zero. Label everything in this region
@@ -91,7 +95,7 @@ def expand_region(labels, start, to_label):
             labels[nxt[0], nxt[1]] = to_label
             queue.extend(neighbors(nxt, labels.shape))
     return labels
-        
+
 
 def get_regions(img_dim, contours):
     # for the given set of contour points, produce a 2D matrix with dimension
@@ -115,7 +119,7 @@ def get_regions(img_dim, contours):
 
         labels = expand_region(labels, unlabeled[0], current_label)
         current_label += 1
-    
+
     return labels, current_label - 1
 
 def get_color_for_label(kmeans_labels, region_labels, label):
@@ -132,6 +136,128 @@ def interpolate_negative_colors(img):
         img[p[0],p[1]] = (img[p[0],p[1]-1] + img[p[0],p[1]+1]) / 2.0
 #    img[bad_pixels] = (img[bad_pixels - 1] + img[bad_pixels + 1])/2.0
     return img
+
+
+def shifting_centers(centers):
+    for values in range(1,51):
+        temp_centers = centers
+        temp_centers[0] = (temp_centers[0]+values)%256;
+        temp_centers[1] = (temp_centers[1]+values)%256;
+        temp_centers[2] = (temp_centers[2]+values)%256;
+
+        reconstructed_image = np.zeros((labels.shape[0], labels.shape[1], 3))
+        reconstructed_image.fill(-1)
+
+        for region_label in range(1, num_labels+1):
+            color_for_label = temp_centers[get_color_for_label(labels, region_labels, region_label)]
+            reconstructed_image[np.where(region_labels == region_label)] = color_for_label
+
+        reconstructed_image = reconstructed_image.astype(np.int32)
+        reconstructed_image = interpolate_negative_colors(reconstructed_image)
+
+        reconstructed_image = reconstructed_image.astype(np.uint8)
+
+        scipy.misc.imsave("editedimage" + str(values) + ".png", reconstructed_image)
+
+    with imageio.get_writer('movie_shifting_centers.gif', mode='I') as writer:
+        for filename in sorted(glob.glob("editedimage*.png"), key=lambda string: int(string.strip("editedimage").strip(".png"))):
+            image = imageio.imread(filename)
+            writer.append_data(image)
+    for fname in glob.glob("editedimage*.png"):
+        os.remove(fname)
+
+def shifting_centers_relative(centers):
+    average_point = mean(centers, axis=0)
+    vector1 = [average_point[0] - centers[0][0], average_point[1] - centers[0][1], average_point[2] - centers[0][2]]
+    vector2 = [average_point[0] - centers[1][0], average_point[1] - centers[1][1], average_point[2] - centers[1][2]]
+    vector3 = [average_point[0] - centers[2][0], average_point[1] - centers[2][1], average_point[2] - centers[2][2]]
+    for values in range(0,51):
+        value=values/50
+        temp_centers = centers.copy()
+        temp_centers[0] = average_point - [x*value for x in vector1]
+        temp_centers[1] = average_point - [x*value for x in vector2]
+        temp_centers[2] = average_point - [x*value for x in vector3]
+
+        reconstructed_image = np.zeros((labels.shape[0], labels.shape[1], 3))
+        reconstructed_image.fill(-1)
+
+        for region_label in range(1, num_labels+1):
+            color_for_label = temp_centers[get_color_for_label(labels, region_labels, region_label)]
+            reconstructed_image[np.where(region_labels == region_label)] = color_for_label
+
+        reconstructed_image = reconstructed_image.astype(np.int32)
+        reconstructed_image = interpolate_negative_colors(reconstructed_image)
+
+        reconstructed_image = reconstructed_image.astype(np.uint8)
+
+        scipy.misc.imsave("editedimage" + str(values) + ".png", reconstructed_image)
+
+    for values in range(0, 51):
+        value = values / 50
+        temp_centers = centers.copy()
+        temp_centers[0] = temp_centers[0] + [x * value for x in vector1]
+        temp_centers[1] = temp_centers[1] + [x * value for x in vector2]
+        temp_centers[2] = temp_centers[2] + [x * value for x in vector3]
+
+        reconstructed_image = np.zeros((labels.shape[0], labels.shape[1], 3))
+        reconstructed_image.fill(-1)
+
+        for region_label in range(1, num_labels + 1):
+            color_for_label = temp_centers[get_color_for_label(labels, region_labels, region_label)]
+            reconstructed_image[np.where(region_labels == region_label)] = color_for_label
+
+        reconstructed_image = reconstructed_image.astype(np.int32)
+        reconstructed_image = interpolate_negative_colors(reconstructed_image)
+
+        reconstructed_image = reconstructed_image.astype(np.uint8)
+
+        scipy.misc.imsave("editedimage" + str(values+50) + ".png", reconstructed_image)
+
+    with imageio.get_writer('movie_shifting_inwards.gif', mode='I') as writer:
+        for filename in sorted(glob.glob("editedimage*.png"), key=lambda string: int(string.strip("editedimage").strip(".png"))):
+            image = imageio.imread(filename)
+            writer.append_data(image)
+
+    for fname in glob.glob("editedimage*.png"):
+        os.remove(fname)
+
+
+def shifting_centers_relative_moving(centers):
+    average_point = mean(centers, axis=0)
+    for values in range(0, 51):
+        average_point = average_point + 10
+        vector1 = [average_point[0] - centers[0][0], average_point[1] - centers[0][1], average_point[2] - centers[0][2]]
+        vector2 = [average_point[0] - centers[1][0], average_point[1] - centers[1][1], average_point[2] - centers[1][2]]
+        vector3 = [average_point[0] - centers[2][0], average_point[1] - centers[2][1], average_point[2] - centers[2][2]]
+        value = 0.5
+        temp_centers = centers.copy()
+        temp_centers[0] = temp_centers[0] + [x * value for x in vector1]
+        temp_centers[1] = temp_centers[1] + [x * value for x in vector2]
+        temp_centers[2] = temp_centers[2] + [x * value for x in vector3]
+
+        reconstructed_image = np.zeros((labels.shape[0], labels.shape[1], 3))
+        reconstructed_image.fill(-1)
+
+        # find the mode (most common) color within each contour region
+        for region_label in range(1, num_labels + 1):
+            color_for_label = temp_centers[get_color_for_label(labels, region_labels, region_label)]
+            reconstructed_image[np.where(region_labels == region_label)] = color_for_label
+
+        reconstructed_image = reconstructed_image.astype(np.int32)
+        reconstructed_image = interpolate_negative_colors(reconstructed_image)
+
+        reconstructed_image = reconstructed_image.astype(np.uint8)
+
+        scipy.misc.imsave("editedimage" + str(values) + ".png", reconstructed_image)
+
+    with imageio.get_writer('movie_relation_motion.gif', mode='I') as writer:
+        for filename in sorted(glob.glob("editedimage*.png"), key=lambda string: int(string.strip("editedimage").strip(".png"))):
+            image = imageio.imread(filename)
+            writer.append_data(image)
+
+    for fname in glob.glob("editedimage*.png"):
+        os.remove(fname)
+
 
 img = scipy.ndimage.imread("feitelson.jpg", mode="RGB").astype("float32")
 
@@ -179,7 +305,7 @@ curve_parameters = fit_polynomials(row_points, k=best_k)
 # create an array of points for each contour
 contours = create_contour_points(curve_parameters, labels.shape[0])
 
-#plt.imshow(labels, cmap="hot") 
+#plt.imshow(labels, cmap="hot")
 #for pts in contours:
 #    plt.plot(pts[:,0], pts[:,1], 'b')
 #plt.show()
@@ -213,4 +339,11 @@ for curve in curve_parameters:
 #plt.imshow(reconstructed_image)
 #plt.show()
 
+# Get an image of the cluster centers all shifting
+# shifting_centers(centers)
 
+# Get an image of the cluster centers moving towards the average point while the average shifts
+# shifting_centers_relative_moving(centers)
+
+# Get an image of the cluster centers moving towards the average point and then back out
+# shifting_centers_relative(centers)
