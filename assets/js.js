@@ -37,11 +37,11 @@ var app = new Vue({
         let vm = this;
         $(".slider").each(function(idx, slider) {
             noUiSlider.create(slider, {
-                start: 20,
+                start: 0,
                 connect: true,
                 range: {
-                    'min': 0,
-                    'max': 100
+                    'min': -200,
+                    'max': 200
                 }
             });
 

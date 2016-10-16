@@ -27,6 +27,25 @@ nav {
 }
 
 canvas {
-    padding-left: 3em;
-    margin: 1.5em;
+    padding-top: 5.7em;
+    padding-left: 3.8em;
+}
+
+.frame {
+    background-size: 100% 100%;
+    width: 633px;
+    height: 714px;
+    background-repeat: no-repeat;
+    position: absolute;
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-image: url(../assets/frame.png);
+}
+
+.painting-div {
+    padding-left: 4.5em;
+}
+
+.pure-u-1-2 {
+    width: 46%;
 }
