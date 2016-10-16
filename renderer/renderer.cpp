@@ -50,21 +50,32 @@ extern "C" {
             std::vector<int> xValues;
             for (int polyIdx = 0; polyIdx < img->numPoly; polyIdx++) {
                 int polyVal = evaluatePoly(y, img, polyIdx);
-                int indexVal = TO_INDEX(polyVal, y, img);
                 xValues.push_back(polyVal);
-                renderTo[indexVal] = -1;
                                 
             }
 
-            /*for (int i = 1; i < xValues.size(); i++)
+            for (int i = 1; i < xValues.size(); i++)
                 if (xValues[i-1] > xValues[i])
-                    xValues[i] = xValues[i-1];
+                    xValues[i] = xValues[i-1]+3;
+
+            for (int i = 0; i < xValues.size()-1; i++) {
+                if (xValues[i+1] < xValues[i]) {
+                    xValues[i] = xValues[i+1]-3;
+                }
+            }
+            
             
             for (int i = 0; i < xValues.size(); i++) {
+                if (xValues[i] < 10)
+                    xValues[i] = 10;
+
+                if (xValues[i] >= 500)
+                    xValues[i] = 500;
+                
                 int indexVal = TO_INDEX(xValues[i], y, img);
                 renderTo[indexVal] = -1;
             }
-*/
+
         }
     }
 
