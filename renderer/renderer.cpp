@@ -35,7 +35,7 @@ extern "C" {
         int currentDegree = img->degree;
         for (int i = 0; i < img->degree+1; i++) {
             double coeff = img->coeffs[(img->degree+1) * polyIdx + i];
-            collector += coeff * pow(y+yShift[polyIdx], currentDegree);
+            collector += coeff * pow(y+yShifts[polyIdx], currentDegree);
             currentDegree--;
         }
 
