@@ -8,11 +8,10 @@ var app = new Vue({
         attributes: [{"name": "x shift",
                       "jsname": "xShifts"},
                      {"name": "y shift",
-                      "jsname": "yShifts"}]
+                      "jsname": "yShifts"}],
+        wackifyLoading: false,
+        wackifyMessage: "Get ready for your dreams to come true!"
     },
-
-
-
     methods: {
         drawCanvas: function() {
             var rows = 520, //height
@@ -31,6 +30,9 @@ var app = new Vue({
                         imgData.data[i*4+3]=255;
             }
             ctx.putImageData(imgData,0,0);
+        },
+        wackify: function() {
+            this.wackifyLoading = true;
         }
     },
     mounted: function() {
