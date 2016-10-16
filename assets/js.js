@@ -2,29 +2,17 @@ var app = new Vue({
     el: '#app',
     data: {
         message: 'Hello Vue.js!',
-        curves: ["bla!", "bla2", "bla3"],
-        attributes: [{
-                name:"x-shift",
-                value: 50
-            },
-            {
-                name: "y-shift",
-                value: 50
-            },
-            {
-                name: "rotation",
-                value: 50
-            },
-            {
-                name: "x-stretch",
-                value: 50
-            },
-            {
-                name: "y-stretch",
-                value: 50
-            }],
-        binArray: []
+        curves: [1,2,3,4,5,6,7],
+        xShifts: [0,0,0,0,0,0,0],
+        yShifts: [0,0,0,0,0,0,0],
+        attributes: [{"name": "x shift",
+                      "jsname": "xShifts"},
+                     {"name": "y shift",
+                      "jsname": "yShifts"}]
     },
+
+
+
     methods: {
         drawCanvas: function() {
             var rows = 520, //height
@@ -43,16 +31,43 @@ var app = new Vue({
                         imgData.data[i*4+3]=255;
             }
             ctx.putImageData(imgData,0,0);
-        },
-        ready: function() {
-            this.drawCanvas();
         }
     },
+    mounted: function() {
+        let vm = this;
+        $(".slider").each(function(idx, slider) {
+            noUiSlider.create(slider, {
+                start: 20,
+                connect: true,
+                range: {
+                    'min': 0,
+                    'max': 100
+                }
+            });
+
+
+            let myIdx = idx/2;
+            slider.noUiSlider.on('update', function (values, handle) {
+                let fa = slider.getAttribute("forattr");
+                if (fa == "xShifts") {
+                    Vue.set(vm.xShifts, parseInt(myIdx), parseInt(values[handle]));
+                } else if (fa == "yShifts") {
+                    vm.yShifts[parseInt(myIdx)] = parseInt(values[handle]);
+                }
+            });
+        });
+
+        $(".accordion").each(function() {
+            $(this).accordion({
+              collapsible: true,
+              active: false
+            });
+        });
+        this.drawCanvas();
+    },
     watch: {
-        binArray: function(val) {
-            this.drawCanvas();
+        xShifts: function(val) {
+            
         }
     }
 })
-
-app.ready();
