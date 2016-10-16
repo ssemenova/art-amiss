@@ -21,7 +21,7 @@ extern "C" {
 
     int xShifts[] = {0, 0, 0, 0, 0, 0, 0};
     int yShifts[] = {0, 0, 0, 0, 0, 0, 0};
-    
+
     void setXShift(int curve, int shift) {
         xShifts[curve] = shift;
     }
@@ -47,12 +47,24 @@ extern "C" {
     void renderToImage(Image* img, int* renderTo) {
         // evaluate each polynomial over the y-axis
         for (int y = 0; y < img->yDim; y++) {
+            std::vector<int> xValues;
             for (int polyIdx = 0; polyIdx < img->numPoly; polyIdx++) {
                 int polyVal = evaluatePoly(y, img, polyIdx);
                 int indexVal = TO_INDEX(polyVal, y, img);
-                //printf("index to write to: x: %d, y: %d -> %d\n", polyVal, y, indexVal);
+                xValues.push_back(polyVal);
+                renderTo[indexVal] = -1;
+                                
+            }
+
+            /*for (int i = 1; i < xValues.size(); i++)
+                if (xValues[i-1] > xValues[i])
+                    xValues[i] = xValues[i-1];
+            
+            for (int i = 0; i < xValues.size(); i++) {
+                int indexVal = TO_INDEX(xValues[i], y, img);
                 renderTo[indexVal] = -1;
             }
+*/
         }
     }
 
