@@ -1,3 +1,6 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+}
 .controls {
     cursor: pointer;
     padding: .5em;
@@ -8,6 +11,14 @@
 
 h3 {
     margin: .25em;
+    font-size: 0.9em;
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    letter-spacing: 2px;
+}
+
+label {
+    font-family: 'Raleway';
 }
 
 nav {
@@ -20,10 +31,12 @@ nav {
 }
 
 #title {
-    font-size: 1.5em;
-    background: yellow;
+    font-size: 1.2em;
     padding: .5em 1em;
+    font-family: 'Montserrat';
+    text-transform: uppercase;
     font-weight: bold;
+    letter-spacing: 5px;
 }
 
 canvas {
@@ -48,4 +61,17 @@ canvas {
 
 .pure-u-1-2 {
     width: 46%;
+}
+
+.pure-control-group {
+    padding-right: 10em;
+}
+
+.noUi-target {
+    float: right;
+    width: 50%;
+}
+
+.pure-form-aligned .pure-control-group label {
+    width: 12em;
 }
