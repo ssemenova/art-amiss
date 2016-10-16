@@ -46,8 +46,8 @@ canvas {
 
 .frame {
     background-size: 100% 100%;
-    width: 641px;
-    height: 728px;
+    width: 635px;
+    height: 720px;
     background-repeat: no-repeat;
     position: absolute;
     background-repeat-x: no-repeat;
@@ -122,7 +122,7 @@ canvas {
 #secretMessages h3 {
     text-align: center;
     font-size: 3em;
-    padding-top: 5em;
+    padding-top: 1em;
     font-family: 'Montserrat';
 }
 

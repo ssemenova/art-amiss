@@ -10,7 +10,9 @@ var app = new Vue({
                      {"name": "y shift",
                       "jsname": "yShifts"}],
         wackifyLoading: false,
-        wackifyMessage: "Get ready for your dreams to come true!"
+        wackifyMessage: "Get ready for your dreams to come true!",
+        wackifyLink: false,
+        wackifyImage: false
     },
     methods: {
         drawCanvas: function() {
@@ -32,6 +34,22 @@ var app = new Vue({
             ctx.putImageData(imgData,0,0);
         },
         wackify: function() {
+            let stuff = getChannels();
+
+            
+            
+            $.post("/getgif", JSON.stringify({
+                "width": 504, "height": 520,
+                "red": Array.from(stuff.red),
+                "green": Array.from(stuff.green),
+                "blue": Array.from(stuff.blue)}))
+                .then((res) => {
+                    console.log(res);
+                    this.wackifyLink = res.link;
+                    this.wackifyImage = "/static/assets/output.gif";
+                });
+
+            window.location = '#';
             this.wackifyLoading = true;
         }
     },

@@ -1,7 +1,7 @@
 <!doctype html>
 
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
 
     <title>Such art</title>
@@ -22,42 +22,47 @@
     <script src="/static/renderer/artimis.js"></script>
     <link rel="stylesheet" href="/static/assets/style.css">
 
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <span id="title">Interactive Art</span>
+      <span id="title">Interactive Art</span>
     </nav>
     <div id="app">
-        <div class="pure-g">
-            <div class="pure-u-1-2 painting-div">
-                <div class="frame"></div>
-                <canvas id="myCanvas" width="504px" height="520px"></canvas>
-            </div>
-            <div class="pure-u-1-2">
-                <div class="controls accordion" v-for="curve in curves">
-                    <h3 class="curve-title">Curve {{curve}}</h3>
-                    <form class="pure-form pure-form-aligned">
-                        <fieldset v-for="attribute in attributes">
-                            <div class="pure-control-group">
-                                <label v-bind:for=attribute.name>{{attribute.name}}</label>
-                                <div class="slider" v-bind:forattr="attribute.jsname"></div>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="wackify">
-                    <button class="button" v-on:click="wackify">WACKIFY!</button>
-                </div>
-            </div>
+      <div class="pure-g">
+        <div class="pure-u-1-2 painting-div">
+          <div class="frame"></div>
+          <canvas id="myCanvas" width="504px" height="520px"></canvas>
         </div>
-        <div class="w3-animate-opacity" id="secretMessages" v-if="wackifyLoading">
-            <h3>{{wackifyMessage}}</h3>
-            <center>
-                <div class="fa fa-spinner fa-spin" v-if="wackifyLoading"></div>
-            </center>
+        <div class="pure-u-1-2">
+          <div class="controls accordion" v-for="curve in curves">
+            <h3 class="curve-title">Curve {{curve}}</h3>
+            <form class="pure-form pure-form-aligned">
+              <fieldset v-for="attribute in attributes">
+                <div class="pure-control-group">
+                  <label v-bind:for=attribute.name>{{attribute.name}}</label>
+                  <div class="slider" v-bind:forattr="attribute.jsname"></div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <div class="wackify">
+            <button class="button" v-on:click="wackify">WACKIFY!</button>
+          </div>
         </div>
+      </div>
+      <div class="w3-animate-opacity" id="secretMessages" v-if="wackifyLoading">
+        <h3>{{wackifyMessage}}</h3>
+        <center>
+          <div v-if="wackifyLink">
+            <img :src="wackifyImage">
+            <p><a :href="wackifyLink">Imgur Link</a></p>
+          </div>
+
+          <div class="fa fa-spinner fa-spin" v-if="wackifyLoading && !wackifyLink"></div>
+        </center>
+      </div>
     </div>
     <script src="assets/js.js"></script>
 
-</body>
+  </body>
 </html>

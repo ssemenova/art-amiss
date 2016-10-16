@@ -47,7 +47,7 @@ def gen_with_k_components(k, fft):
         for flat_idx in largest_k_indices:
             mask[np.unravel_index(flat_idx, mag.shape)] = k
 
-        phase += -k #mask
+        phase += k #mask
         x = pm2i(mag, phase)
         #same as: x = color_channel_fft * np.exp(1j * k)
     
@@ -114,13 +114,24 @@ def upload_to_imgur(image_name):
     
 @app.route("/getgif", methods=["POST"])
 def pixels_to_gif_api():
+    try:
+        os.remove("static/assets/output.gif")
+    except:
+        pass # #LIKEABOSS
+    
     person_uuid = str(uuid4())
+    os.mkdir(person_uuid)
     pixel_data = request.get_json(force=True)
     make_image_from_pixels(pixel_data, "{}.png".format(person_uuid))
     read_image_and_convert_gif(person_uuid)
-    r = upload_to_imgur("{}.gif".format(person_uuid))
+    os.system("""ffmpeg -i "{}/frame%d.png" -vf scale=320:-1 -y output.gif""".format(person_uuid))
+    os.system("""ffmpeg -i "{}/frame%d.png" -y static/assets/output.gif""".format(person_uuid))
+    #r = upload_to_imgur("{}.gif".format(person_uuid))
+    # TODO: only one user at a time...
+    r = upload_to_imgur("{}.gif".format("output"))
     os.remove("{}.png".format(person_uuid))
     os.remove("{}.gif".format(person_uuid))
+
     shutil.rmtree(person_uuid)
     return jsonify(r)
     
